@@ -14,7 +14,7 @@ export const RoutesConfig = () => {
                 <Route path='/' element={<Login />} />
                 <Route path='/Login' element={<Login />} />
                 <Route path='/Create-Account' element={<CreateAccount />} />
-                <Route path='Dashboard' element={<CurrentAppView />} />
+                <Route path='/Dashboard' element={<CurrentAppView />} />
 
             </Routes>
 

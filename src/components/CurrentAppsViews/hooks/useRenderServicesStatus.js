@@ -1,43 +1,39 @@
 import { useEffect, useState } from "react";
-import axios from 'axios';
-import { API_BASE, RENDER_SERVICES } from "../../../utils/endpoints";
+import { RetrieveDeployments } from '../../../services/Render Integrations/RenderServices';
 
 const useRenderServicesStatus = () => {
     const [currentServices, setCurrentServices] = useState([]); // Initialize as an empty array
-    const [loading, setLoading] = useState(false); // Loading state
+    const [loading, setLoading] = useState(true); // Set loading initially to true since data is being fetched
     const [error, setError] = useState(null); // Error state
 
+    // Function to retrieve services
     const RetrieveServices = async () => {
-        setLoading(true); // Set loading to true
-        setError(null); // Reset any previous errors
+        setLoading(true); // Ensure loading is true before starting request
+        setError(null); // Reset any previous error messages
+
         try {
-            const response = await axios.get(`${API_BASE}${RENDER_SERVICES}`);
-            setCurrentServices(response.data.response); // Set currentServices to the 'response' array
-            console.log("Fetched services:", response.data.response); // Log the actual data returned
-        } catch (err) {
-            console.error("Error fetching services:", err); // Log error details
-            setError(err.message || "Error fetching services."); // Set a user-friendly error message
+            const results = await RetrieveDeployments(); // Await the service call
+            setCurrentServices(results.response); // Set services data on successful response
+            console.log("Fetched services:", results.response); // Log the fetched services
+        } catch (error) {
+            console.error("Error fetching services:", error); // Log error details
+            setError(error.message || "Error fetching services."); // Set error message if any
         } finally {
-            setLoading(false); // Reset loading state
+            setLoading(false); // Set loading to false after request completes
         }
     };
 
-    const getCurrentServices = () => {
-        console.log(currentServices);
-    };
-
-    // Initial execution
+    // Initial execution of the service retrieval
     useEffect(() => {
         RetrieveServices();
-    }, []);
+    }, []); // Empty dependency array ensures this only runs on mount
 
     // Return values from hook
     return {
         currentServices,
-        loading, // Include loading state in the return
+        loading, // Keep loading for internal hook logic
         error, // Include error state in the return
-        RetrieveServices,
-        getCurrentServices,
+        RetrieveServices // Allow external calls to refresh services
     };
 };
 

@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
-import { Card, CardContent, TextField, Button, Typography, CardMedia, Divider } from '@mui/material';
+import { Card, CardContent, TextField, Button, CardMedia, Divider } from '@mui/material';
 import useLoginForm from './Hooks/useLoginForm';
 import logo from '../../assets/logo/all1one.jpg'
 import { useNavigate } from 'react-router';
 export const Login = () => {
-    const { values, errors, handleChange, handleSubmit } = useLoginForm();
+    const { values, errors, authResponse, handleChange, handleSubmit } = useLoginForm();
     const appNavigation = useNavigate()
     return (
         <Card sx={{ maxWidth: 400, margin: 'auto', mt: 5, padding: 3 }}>
@@ -43,6 +43,10 @@ export const Login = () => {
                     <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
                         Login
                     </Button>
+
+                    {authResponse.data.status === 200 && authResponse.data.message === "Account Authorized" ? <Alert variant="outlined" severity="success">
+                        This is an outlined success Alert.
+                    </Alert> : ""}
                     <Divider sx={{ border: '1px solid', margin: '1rem' }} />
                     <Button variant="outlined" color="info" fullWidth onClick={() => { appNavigation('Create-Account') }}>
                         Need an account? please click here!!

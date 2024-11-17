@@ -7,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Button, Typography, CircularProgress, ButtonGroup, Paper } from '@mui/material';
+import { Button, Typography, ButtonGroup, Paper } from '@mui/material';
 import useRenderServicesStatus from './hooks/useRenderServicesStatus';
 
 const darkTheme = createTheme({
@@ -17,7 +17,7 @@ const darkTheme = createTheme({
 });
 
 export const CurrentAppView = () => {
-    const { currentServices, loading, error, RetrieveServices } = useRenderServicesStatus();
+    const { currentServices, error, RetrieveServices } = useRenderServicesStatus();
 
     return (
         <>
@@ -25,9 +25,8 @@ export const CurrentAppView = () => {
                 GET INFORMATION
             </Button>
             <ThemeProvider theme={darkTheme}>
-
-                <TableContainer component={Paper} >
-                    <Table aria-label="services table" >
+                <TableContainer component={Paper}>
+                    <Table aria-label="services table">
                         <TableHead>
                             <TableRow>
                                 <TableCell align="left">Service Id</TableCell>
@@ -41,21 +40,17 @@ export const CurrentAppView = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {loading ? ( // Show loading indicator while fetching data
+                            {error ? (
+                                // Show error message if there was an error
                                 <TableRow>
-                                    <TableCell colSpan={7} align="center">
-                                        <CircularProgress />
-                                    </TableCell>
-                                </TableRow>
-                            ) : error ? ( // Show error message if there was an error
-                                <TableRow>
-                                    <TableCell colSpan={7} align="center">
+                                    <TableCell colSpan={8} align="center">
                                         <Typography variant="subtitle2" color="error">
                                             {error} {/* Show the error message */}
                                         </Typography>
                                     </TableCell>
                                 </TableRow>
-                            ) : currentServices.length > 0 ? (
+                            ) : currentServices && currentServices.length > 0 ? (
+                                // Display rows when there are services
                                 currentServices.map((item) => (
                                     <TableRow key={item.service.id}>
                                         <TableCell>{item.service.id}</TableCell>
@@ -65,20 +60,28 @@ export const CurrentAppView = () => {
                                         <TableCell>{item.service.type}</TableCell>
                                         <TableCell>{new Date(item.service.updatedAt).toLocaleString()}</TableCell>
                                         <TableCell>
-                                            <Button variant='outlined' href={item.service.serviceDetails.url} target="_blank" rel="noopener noreferrer">
+                                            <Button
+                                                variant="outlined"
+                                                href={item.service.serviceDetails.url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
                                                 Go to this page
                                             </Button>
                                         </TableCell>
-                                        <TableCell><ButtonGroup variant="outlined" aria-label="">
-                                            <Button color='success'>Launch Redeployment</Button>
-                                            <Button color='warning'>Suspend Service</Button>
-                                            <Button color='error'>Delete Application</Button>
-                                        </ButtonGroup></TableCell>
+                                        <TableCell>
+                                            <ButtonGroup variant="outlined">
+                                                <Button color="success">Launch Redeployment</Button>
+                                                <Button color="warning">Suspend Service</Button>
+                                                <Button color="error">Delete Application</Button>
+                                            </ButtonGroup>
+                                        </TableCell>
                                     </TableRow>
                                 ))
                             ) : (
+                                // If no services, show 'No data available'
                                 <TableRow>
-                                    <TableCell colSpan={7} align="center">
+                                    <TableCell colSpan={8} align="center">
                                         <Typography variant="subtitle2" color="textSecondary">
                                             No data available
                                         </Typography>

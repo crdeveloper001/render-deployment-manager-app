@@ -1,8 +1,9 @@
 import { useState } from 'react';
-
+import { PostAuthentication } from '../../../services/Authentication/AuthenticationServices'
 const useLoginForm = () => {
     const [values, setValues] = useState({ email: '', password: '' });
     const [errors, setErrors] = useState({ email: '', password: '' });
+    const [authResponse, setAuthResponse] = useState({})
 
     const validate = () => {
         let tempErrors = {};
@@ -29,15 +30,26 @@ const useLoginForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
         if (validate()) {
-            alert('Login Successful');
-            // Perform login action here
+            //alert('Login Successful');
+            const request = PostAuthentication(values)
+
+            request.then((results) => {
+                setAuthResponse(results)
+                console.log(results);
+
+            }).catch(error => {
+                console.log(error);
+
+            })
         }
     };
 
     return {
         values,
         errors,
+        authResponse,
         handleChange,
         handleSubmit,
     };
