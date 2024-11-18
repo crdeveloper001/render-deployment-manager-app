@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { PostAuthentication } from '../../../services/Authentication/AuthenticationServices'
+import { useNavigate } from 'react-router';
 const useLoginForm = () => {
+    const appNav = useNavigate()
     const [values, setValues] = useState({ email: '', password: '' });
     const [errors, setErrors] = useState({ email: '', password: '' });
     const [authResponse, setAuthResponse] = useState({})
@@ -37,10 +39,26 @@ const useLoginForm = () => {
 
             request.then((results) => {
                 setAuthResponse(results)
+
+                switch (results?.data?.message) {
+                    case "Account Authorized":
+                        sessionStorage.setItem("userInformation", JSON.stringify(results.data.payload))
+                        sessionStorage.setItem("authorized", results.data.token)
+                        appNav("/Dashboard")
+                        break;
+                }
+
+
                 console.log(results);
 
             }).catch(error => {
-                console.log(error);
+
+                switch (error.response.data.message) {
+                    case "Authentication failed: Account not found":
+                        setAuthResponse(error.response)
+                        break;
+                }
+
 
             })
         }

@@ -1,4 +1,5 @@
 export const API_BASE = "http://localhost:4500/"
+//export const API_BASE = "https://render-deployment-manager-server.onrender.com/"
 export const PRODUCTION_BASE = ""
 //endpoint for api of <Spinner animation="border" role="status" /> 
 export const RENDER_SERVICES = {

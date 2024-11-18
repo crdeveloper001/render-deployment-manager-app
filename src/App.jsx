@@ -1,17 +1,12 @@
 /* eslint-disable no-unused-vars */
 
 import './App.css'
-import { CreateAccount } from './components/CreateAccount/CreateAccount'
-import { CurrentAppView } from './components/CurrentAppsViews/CurrentAppView'
-import { Login } from './components/Login/Login'
 
 function App() {
+  const apiBase = import.meta.env.VITE_API_BASE;
 
   return (
     <>
-
-
-
     </>
   )
 }

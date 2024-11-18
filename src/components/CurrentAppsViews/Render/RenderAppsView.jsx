@@ -16,13 +16,13 @@ const darkTheme = createTheme({
     },
 });
 
-export const CurrentAppView = () => {
+export const RenderAppsView = () => {
     const { currentServices, error, RetrieveServices } = useRenderServicesStatus();
 
     return (
         <>
-            <Button variant="contained" color="secondary" onClick={RetrieveServices}>
-                GET INFORMATION
+            <Button variant="contained" color="secondary" onClick={RetrieveServices} sx={{ marginBottom: '1rem' }}>
+                REFRESH INFORMATION
             </Button>
             <ThemeProvider theme={darkTheme}>
                 <TableContainer component={Paper}>
@@ -31,8 +31,6 @@ export const CurrentAppView = () => {
                             <TableRow>
                                 <TableCell align="left">Service Id</TableCell>
                                 <TableCell align="left">Service Name</TableCell>
-                                <TableCell align="left">Repository Location</TableCell>
-                                <TableCell align="left">Publish Path</TableCell>
                                 <TableCell align="left">Application Type</TableCell>
                                 <TableCell align="left">Last Date Updated</TableCell>
                                 <TableCell align="left">Link For Page</TableCell>
@@ -55,8 +53,6 @@ export const CurrentAppView = () => {
                                     <TableRow key={item.service.id}>
                                         <TableCell>{item.service.id}</TableCell>
                                         <TableCell>{item.service.name}</TableCell>
-                                        <TableCell>{item.service.repo}</TableCell>
-                                        <TableCell>{item.service.serviceDetails.publishPath}</TableCell>
                                         <TableCell>{item.service.type}</TableCell>
                                         <TableCell>{new Date(item.service.updatedAt).toLocaleString()}</TableCell>
                                         <TableCell>
