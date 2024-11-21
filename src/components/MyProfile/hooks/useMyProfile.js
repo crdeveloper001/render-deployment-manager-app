@@ -1,6 +1,9 @@
-import { useState } from "react"
+/* eslint-disable no-unused-vars */
+import { useState,useEffect,useContext,createContext } from "react"
 
 const useMyProfile = () => {
+
+   
 
     const [currentSession, setCurrentSession] = useState({
         _id: '',
@@ -19,6 +22,28 @@ const useMyProfile = () => {
         },
         accountAppsDeployed: null,
     })
+    useEffect(() => {
+        // Fetch payload from session storage
+        const sessionData = sessionStorage.getItem('userInformation');
+        if (sessionData) {
+            try {
+                // Parse the JSON string if it's stored as such
+                const parsedData = JSON.parse(sessionData);
+    
+                // Update the state with the parsed data
+                setCurrentSession(prevState => ({
+                    ...prevState,
+                    ...parsedData, // Spread parsed data into the state
+                    accountRenderDetails: {
+                        ...prevState.accountRenderDetails,
+                        ...(parsedData.accountRenderDetails || {}),
+                    },
+                }));
+            } catch (error) {
+                console.error('Failed to parse session data', error);
+            }
+        }
+    }, []);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
