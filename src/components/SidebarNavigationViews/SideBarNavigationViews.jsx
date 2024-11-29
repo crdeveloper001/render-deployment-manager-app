@@ -58,7 +58,7 @@ const SideBarNavigationViews = (props) => {
             <List>
 
                 <List>
-                    {['Home', 'Profile', 'Render Apps', 'AWS Apps', 'Azure Apps'].map((text, index) => (
+                    {['Home', 'Profile', 'Onboard Cloud Account', 'Render Apps', 'AWS Apps', 'Azure Apps'].map((text, index) => (
                         <React.Fragment key={text}>
                             <ListItem disablePadding>
                                 <ListItemButton onClick={sidebarNavigationHandler}>
